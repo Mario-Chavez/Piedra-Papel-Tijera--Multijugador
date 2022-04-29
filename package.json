@@ -1,0 +1,24 @@
+{
+    "name": "desafio-modulo6",
+    "version": "1.0.0",
+    "license": "MIT",
+    "scripts": {
+        "dev:front": "parcel serve ./client/index.html",
+        "build:front": "parcel build ./client/index.html",
+        "dev:server": "nodemon --watch './server/index.ts' --exec ts-node ./server/dev.ts",
+        "build:server": "tsc ./server/index.ts"
+    },
+    "dependencies": {
+        "@types/node": "^17.0.0",
+        "@vaadin/router": "^1.7.4",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "firebase": "8.7.1",
+        "firebase-admin": "^10.0.1",
+        "nanoid": "^3.1.30",
+        "nodemon": "^2.0.15",
+        "parcel": "^2.0.1",
+        "typescript": "^4.5.4"
+    }
+}
