@@ -442,7 +442,6 @@ const state = {
 
   movePlayer1Rtdb(callback?) {
     const cs = this.getState();
-    console.log("lo q mando al db dsd estate.ts player1 ==", cs);
     fetch(API_URL + "/rooms/" + cs.rtdbRoomId + "/player1", {
       method: "post",
       headers: {
@@ -467,9 +466,8 @@ const state = {
       callback();
     }
   },
-  movePlayer2Rtdb(val, callback?) {
+  movePlayer2Rtdb(callback?) {
     const cs = this.getState();
-    console.log("lo q mando al db state como val", val);
 
     fetch(API_URL + "/rooms/" + cs.rtdbRoomId + "/player2", {
       method: "post",
@@ -485,7 +483,7 @@ const state = {
         // roomId: cs.roomId,
         // rtdbRoomId: cs.rtdbRoomId,
         // winer: "",
-        movePlayer2: val,
+        movePlayer2: cs.currentGame.player2move,
       }),
     });
     // cs.currentGame.player2move = cs.currentGame.player2move; // probar setear en el current

@@ -63,10 +63,9 @@ export function initPlayGame(params) {
     // state.listenRoomPlayer1(); 15/4
     state.setGame2(playerPlayEl);
 
-    state.movePlayer2Rtdb(playerPlayEl, () => {
-      // console.log("mande el movimiento al db ", cs.currentGame.player2move);
+    state.movePlayer2Rtdb(() => {
+      console.log("mande el movimiento al db ", cs.currentGame.player2move);
       const searchMove2 = setInterval(() => {
-        // state.setState(cs); //lo saque por q ya tiene un set listener 15/4
         if (
           cs.currentGame.player1move != "" &&
           cs.currentGame.player2move != ""
