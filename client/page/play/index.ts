@@ -37,46 +37,39 @@ export function initPlayGame(params) {
   // showBothPlays muestra ambas jugadas en la pantalla y analiza si se empató, perdió, o ganó.
   // guarda las jugadas en el state y el resultado si es ganador o perdedor, si se empata, reinicia el juego.
 
-  function showBothPlays(playerPlayEl) {
+  function showBothPlays() {
     // console.log("me llego la juda a showBoth1", playerPlay);
     // state.listenRoomPlayer2();15/4
-    state.setGame(playerPlayEl);
 
-    state.movePlayer1Rtdb(() => {
-      // console.log("mande el movimiento al db ", cs.currentGame.player1move);
+    // console.log("mande el movimiento al db ", cs.currentGame.player1move);
 
-      const searchMove = setInterval(() => {
-        if (
-          cs.currentGame.player2move != "" &&
-          cs.currentGame.player1move != ""
-        ) {
-          clearInterval(searchMove);
-          params.goTo("/playResults");
-        } else {
-          console.log("no tiene jugada el player2");
-        }
-      }, 1500); //baje el tiempo
-    });
+    const searchMove = setInterval(() => {
+      if (
+        cs.currentGame.player2move != "" &&
+        cs.currentGame.player1move != ""
+      ) {
+        clearInterval(searchMove);
+        params.goTo("/playResults");
+      } else {
+        console.log("no tiene jugada el player2");
+      }
+    }, 1500); //baje el tiempo
   }
 
-  function showBothPlays2(playerPlayEl) {
+  function showBothPlays2() {
     // state.listenRoomPlayer1(); 15/4
-    state.setGame2(playerPlayEl);
 
-    state.movePlayer2Rtdb(() => {
-      console.log("mande el movimiento al db ", cs.currentGame.player2move);
-      const searchMove2 = setInterval(() => {
-        if (
-          cs.currentGame.player1move != "" &&
-          cs.currentGame.player2move != ""
-        ) {
-          clearInterval(searchMove2);
-          params.goTo("/playResults");
-        } else {
-          console.log("no tiene jugada el player1");
-        }
-      }, 1500);
-    });
+    const searchMove2 = setInterval(() => {
+      if (
+        cs.currentGame.player1move != "" &&
+        cs.currentGame.player2move != ""
+      ) {
+        clearInterval(searchMove2);
+        params.goTo("/playResults");
+      } else {
+        console.log("no tiene jugada el player1");
+      }
+    }, 1500);
   }
 
   /* aqui iria el style */
@@ -159,13 +152,21 @@ export function initPlayGame(params) {
           // aqui manda a showboth lo que eligio
           //si es player1
           if (cs.userNombre) {
-            showBothPlays(playerPlayEl.type);
             clearInterval(time);
+            state.setGame(playerPlayEl.type);
+
+            state.movePlayer1Rtdb(() => {
+              showBothPlays();
+            });
           }
           // si es player2
           if (cs.usernombre) {
-            showBothPlays2(playerPlayEl.type);
             clearInterval(time);
+            state.setGame2(playerPlayEl.type);
+
+            state.movePlayer2Rtdb(() => {
+              showBothPlays2();
+            });
           }
         }
       }, 1000);

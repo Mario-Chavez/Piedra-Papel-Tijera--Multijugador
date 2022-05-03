@@ -291,6 +291,7 @@ const state = {
       })
       .then((data) => {
         cs.rtdbRoomId = data.rtdbRoomId;
+        cs.roomId = roomId;
         this.listenRoomPlayer1(); //aqui lo subi antes del set al state 29/3/22
         this.setState(cs);
         if (callback) {
@@ -314,7 +315,6 @@ const state = {
       cs.readyPlayer1 = player[3];
       cs.userId = player[4];
       cs.usernombre = player[5];
-      cs.winer = player[8];
       this.setState(cs);
     });
   },
@@ -332,7 +332,6 @@ const state = {
       cs.player2Nombre = player[3];
       cs.player2Online = player[4];
       cs.readyPlayer2 = player[5];
-      cs.winer = player[8];
       this.setState(cs);
     });
   },
@@ -459,6 +458,10 @@ const state = {
         movePlayer1: cs.currentGame.player1move,
       }),
     });
+    console.log(
+      "esto lo q tiene el current player 1 en movimineto = ",
+      cs.currentGame.player1move
+    );
     // cs.currentGame.player1move = cs.currentGame.player1move;
     // this.setState(cs); saque esto por q creo q el set move es suficiente 18/4
 
@@ -486,6 +489,10 @@ const state = {
         movePlayer2: cs.currentGame.player2move,
       }),
     });
+    console.log(
+      "esto lo q tiene el current player 1 en movimineto = ",
+      cs.currentGame.player2move
+    );
     // cs.currentGame.player2move = cs.currentGame.player2move; // probar setear en el current
     // this.setState(cs); saque esto por q creo q el set move es suficiente 18/4
     if (callback) {
