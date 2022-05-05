@@ -5,7 +5,7 @@ import { initInstructions } from "./page/instructions/index";
 import { initPlayGame } from "./page/play/index";
 import { initResultLose } from "./page/result-lose";
 import { initResultWin } from "./page/result-win";
-import { initResultEmpate } from "./page/game";
+import { initResultEmpate } from "./page/result-tie";
 import { initPlayGameResult } from "./page/plays-results";
 import { initWaitingOpp } from "./page/waitiingOp";
 const routes = [
@@ -40,7 +40,7 @@ const routes = [
   },
 
   {
-    path: /\/game/,
+    path: /\/tie/,
     handler: initResultEmpate,
   },
   {

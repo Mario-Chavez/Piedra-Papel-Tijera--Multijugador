@@ -27,7 +27,7 @@ export function initPlayGameResult(params) {
       );
 
       if (winner == "empate") {
-        params.goTo("/game");
+        params.goTo("/tie");
       } else if (winner == "ganaste") {
         params.goTo("/result/win");
       } else if (winner == "perdiste") {
@@ -55,7 +55,7 @@ export function initPlayGameResult(params) {
       );
 
       if (winner == "empate") {
-        return params.goTo("/game");
+        return params.goTo("/tie");
       } else if (winner == "ganaste") {
         return params.goTo("/result/win");
       } else if (winner == "perdiste") {
