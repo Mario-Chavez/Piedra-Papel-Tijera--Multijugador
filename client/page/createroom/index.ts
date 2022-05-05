@@ -1,7 +1,6 @@
 import { state } from "../../state";
 
 export function initCreateRoom(params) {
-  const cs = state.getState(); // siempre iniciar el stado
   const div = document.createElement("div");
   div.innerHTML = `
       <div class="instructions__titulo-conteiner">

@@ -19,11 +19,7 @@ export function initResultLose(params) {
     const button = div.querySelector(".instructions__button-container");
 
     button.addEventListener("click", () => {
-      // console.log("hice click al boton de restar");
-
       state.restarPlayer1Rtdb(() => {
-        // console.log("me voy a waiting player1");
-
         params.goTo("/waiting");
       });
     });
@@ -34,20 +30,16 @@ export function initResultLose(params) {
   </div>
     <text-el variant="">vos : ${result.player2}</text-el>
     <text-el variant="">${cs.usernombre}: ${result.player1}</text-el>
-  <div class="instructions__button-container">
+  <div class="instructions__button-container2">
      <boton-el class= "instructions__button-start" >! volver a jugar ¡</boton-el>
   </div>
       `;
     div.classList.add("instructions__main-div-container");
 
-    const button = div.querySelector(".instructions__button-container");
+    const button = div.querySelector(".instructions__button-container2");
 
     button.addEventListener("click", () => {
-      // console.log("hice click al boton de restar player2");
-
       state.restarPlayer2Rtdb(() => {
-        // console.log("me voy a waiting player2");
-
         params.goTo("/waiting");
       });
     });

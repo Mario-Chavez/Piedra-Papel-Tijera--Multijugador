@@ -1,7 +1,6 @@
 import { state } from "../../state";
 
 export function initResultEmpate(params) {
-  //const result = state.returnScore();
   const div = document.createElement("div");
   div.innerHTML = `
        

@@ -97,9 +97,6 @@ app.post("/rooms", (req, res) => {
               userId,
               usernombre,
               readyPlayer1: false,
-              // roomId: "",
-              // rtdbRoomId: "",
-              //  winer: "",
               playRestar1: false,
               player1Online: false,
               movePlayer1: "",
@@ -108,9 +105,6 @@ app.post("/rooms", (req, res) => {
               player2Id: "",
               player2Nombre: "",
               readyPlayer2: false,
-              // roomId: "",
-              // rtdbRoomId: "",
-              // winer: "",
               player2Online: false,
               playRestar2: false,
               movePlayer2: "",
@@ -193,55 +187,47 @@ app.post("/rooms/:rtdbRoomId/player1", function (req, res) {
     movePlayer1,
   } = req.body;
   const roomRef = rtdb.ref("/rooms/" + rtdbRoomId + "/player1");
-  roomRef.update({
-    readyPlayer1,
-    // roomId,
-    // winer,
-    playRestar1,
-    player1Online,
-    // rtdbRoomId,
-    userId,
-    usernombre,
-    movePlayer1,
-  }),
+  roomRef.update(
+    {
+      readyPlayer1,
+      playRestar1,
+      player1Online,
+      userId,
+      usernombre,
+      movePlayer1,
+    },
     () => {
       res.status(200).json("player1 propiedades actualizadas");
-    };
+    }
+  );
 });
 
 // este endpoint modifica los valores guardado en el db para el player1
 
 app.post("/rooms/:rtdbRoomId/player2", function (req, res) {
-  console.log(
-    "soy el back /rooms/rtdb/player2 datos que me llegan",
-    req.body,
-    "=reqparams"
-  );
   const { rtdbRoomId } = req.params;
   const {
     player2Id,
     player2Nombre,
     readyPlayer2,
-    // roomId,
-    // winer,
     player2Online,
     playRestar2,
     movePlayer2,
   } = req.body;
   const roomRef = rtdb.ref("/rooms/" + rtdbRoomId + "/player2");
-  roomRef.update({
-    player2Id,
-    player2Nombre,
-    readyPlayer2,
-    // roomId,
-    // winer,
-    player2Online,
-    playRestar2,
-    movePlayer2,
-  }),
+  roomRef.update(
+    {
+      player2Id,
+      player2Nombre,
+      readyPlayer2,
+      player2Online,
+      playRestar2,
+      movePlayer2,
+    },
     () => {
       res.status(200).json("player2 propiedades actualizadas");
-    };
+    }
+  );
 });
 
 app.use(express.static("dist"));
@@ -253,5 +239,3 @@ app.get("*", (req, res) => {
 app.listen(port, () => {
   console.log("Hola soy express y estoy corriendo desde = " + port);
 });
-
-///////

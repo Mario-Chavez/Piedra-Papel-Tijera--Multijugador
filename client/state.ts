@@ -258,10 +258,6 @@ const state = {
 
   accessToRoom(callback?) {
     const cs = this.getState();
-    /* saque esto 26/4 */
-    // const userId = cs.userId; //|| cs.player2Id aqui saque esto porq ya tiene accesToRomm2 12/4
-    // cs.userId = userId;saque 26/4
-    // this.setState(cs); saque por q esta setendo 2 veces 26/4
 
     fetch(API_URL + "/rooms/" + cs.roomId + "?userId=" + cs.userId)
       .then((res) => {
@@ -279,11 +275,6 @@ const state = {
   accessToRoomPlayer2(roomIdDelInput, callback?) {
     const cs = this.getState();
     const roomId = roomIdDelInput.toString();
-    /* saque 26/4 */
-    // const userId = cs.player2Id;
-    // cs.roomId = roomId;
-    // cs.userId = userId;
-    // this.setState(cs); saque 26/4
 
     fetch(API_URL + "/rooms/" + roomId + "?userId=" + cs.player2Id)
       .then((res) => {
@@ -292,7 +283,7 @@ const state = {
       .then((data) => {
         cs.rtdbRoomId = data.rtdbRoomId;
         cs.roomId = roomId;
-        this.listenRoomPlayer1(); //aqui lo subi antes del set al state 29/3/22
+        this.listenRoomPlayer1();
         this.setState(cs);
         if (callback) {
           callback();
@@ -307,7 +298,6 @@ const state = {
 
     chatroomsRef.on("value", (snapshot) => {
       const dataPlayer1 = snapshot.val();
-      console.log("esto es lo que llega desde el rtdb/player1", dataPlayer1);
       const player = map(dataPlayer1);
       cs.currentGame.player1move = player[0];
       cs.playRestar1 = player[1];
@@ -324,7 +314,6 @@ const state = {
 
     chatroomsRef.on("value", (snapshot) => {
       const dataPlayer2 = snapshot.val();
-      console.log("esto es lo que llega desde el rtdb/player2", dataPlayer2);
       const player = map(dataPlayer2);
       cs.currentGame.player2move = player[0];
       cs.playRestar2 = player[1];
@@ -346,16 +335,12 @@ const state = {
         playRestar1: false,
         player1Online: true,
         readyPlayer1: false,
-        // roomId: cs.roomId,
-        // rtdbRoomId: "",
         userId: cs.userId,
         usernombre: cs.userNombre,
-        // winer: "",
         movePlayer1: "",
       }),
     });
-    // cs.player1Online = true; saqu 18/04
-    // this.setState(cs);
+
     if (callback) {
       callback();
     }
@@ -375,14 +360,10 @@ const state = {
         player2Id: cs.player2Id,
         player2Nombre: cs.player2Nombre,
         readyPlayer2: false,
-        // roomId: "",
-        // rtdbRoomId: "", //posible roblema al no tener roomId
-        // winer: "",
         movePlayer2: "",
       }),
     });
-    // cs.player2Online = true; saque 18/4
-    //this.setState(cs);
+
     if (callback) {
       callback();
     }
@@ -399,16 +380,12 @@ const state = {
         playRestar1: false,
         player1Online: true,
         readyPlayer1: true,
-        // roomId: cs.roomId,
-        // rtdbRoomId: cs.rtdbRoomId,
         userId: cs.userId,
         usernombre: cs.userNombre,
-        // winer: "",
         movePlayer1: "",
       }),
     });
-    // cs.readyPlayer1 = true; saque 18/4
-    //this.setState(cs);
+
     if (callback) {
       callback();
     }
@@ -426,14 +403,10 @@ const state = {
         player2Id: cs.player2Id,
         player2Nombre: cs.player2Nombre,
         readyPlayer2: true,
-        // roomId: "",
-        // rtdbRoomId: "",
-        // winer: "",
         movePlayer2: "",
       }),
     });
-    // cs.readyPlayer2 = true; saque 18/4
-    //this.setState(cs);
+
     if (callback) {
       callback();
     }
@@ -449,21 +422,12 @@ const state = {
       body: JSON.stringify({
         playRestar1: false,
         player1Online: true,
-        readyPlayer1: true,
-        // roomId: cs.roomId,
-        // rtdbRoomId: cs.rtdbRoomId,
+        readyPlayer1: false,
         userId: cs.userId,
         usernombre: cs.userNombre,
-        // winer: "",
         movePlayer1: cs.currentGame.player1move,
       }),
     });
-    console.log(
-      "esto lo q tiene el current player 1 en movimineto = ",
-      cs.currentGame.player1move
-    );
-    // cs.currentGame.player1move = cs.currentGame.player1move;
-    // this.setState(cs); saque esto por q creo q el set move es suficiente 18/4
 
     if (callback) {
       callback();
@@ -482,25 +446,18 @@ const state = {
         player2Online: true,
         player2Id: cs.player2Id,
         player2Nombre: cs.player2Nombre,
-        readyPlayer2: true,
-        // roomId: cs.roomId,
-        // rtdbRoomId: cs.rtdbRoomId,
-        // winer: "",
+        readyPlayer2: false,
         movePlayer2: cs.currentGame.player2move,
       }),
     });
-    console.log(
-      "esto lo q tiene el current player 1 en movimineto = ",
-      cs.currentGame.player2move
-    );
-    // cs.currentGame.player2move = cs.currentGame.player2move; // probar setear en el current
-    // this.setState(cs); saque esto por q creo q el set move es suficiente 18/4
+
     if (callback) {
       callback();
     }
   },
   restarPlayer1Rtdb(callback?) {
     const cs = this.getState();
+
     fetch(API_URL + "/rooms/" + cs.rtdbRoomId + "/player1", {
       method: "post",
       headers: {
@@ -509,24 +466,23 @@ const state = {
       body: JSON.stringify({
         playRestar1: true,
         player1Online: true,
-        readyPlayer1: false, // aqui cambie a false
-        // roomId: cs.roomId,
-        // rtdbRoomId: cs.rtdbRoomId,
+        readyPlayer1: false,
         userId: cs.userId,
         usernombre: cs.userNombre,
-        // winer: "",
         movePlayer1: "",
       }),
     });
-    cs.playRestar1 = true; // volvi a ponerlo 18/4
-    cs.currentGame.player1move = ""; //volvi a ponerlo 18/4
-    // this.setState(cs); // volvi a ponerlo el set al state 18/4
+    cs.playRestar1 = true;
+    cs.currentGame.player1move = "";
+
     if (callback) {
       callback();
     }
   },
+
   restarPlayer2Rtdb(callback?) {
     const cs = this.getState();
+
     fetch(API_URL + "/rooms/" + cs.rtdbRoomId + "/player2", {
       method: "post",
       headers: {
@@ -537,16 +493,13 @@ const state = {
         player2Online: true,
         player2Id: cs.player2Id,
         player2Nombre: cs.player2Nombre,
-        readyPlayer2: false, //cambie a false
-        // roomId: cs.roomId,
-        // rtdbRoomId: cs.rtdbRoomId,
-        // winer: "",
+        readyPlayer2: false,
         movePlayer2: "",
       }),
     });
-    cs.playRestar2 = true; // volvi a ponerlo 18/4
-    cs.currentGame.player2move = ""; // puse de vuelta esto 18/4
-    // this.setState(cs); //voli a ponerlo 18/4
+    cs.playRestar2 = true;
+    cs.currentGame.player2move = "";
+
     if (callback) {
       callback();
     }
@@ -557,12 +510,5 @@ const state = {
     this.listeners.push(callback);
   },
 };
-/* creo que esto no va  mirar el sstate del front de heroku */
-/* (function () {
-  const localState = localStorage.getItem("state");
-  if (localState) {
-    state.setState(JSON.parse(localState));
-  }
-})(); */
 
 export { state };

@@ -1,14 +1,10 @@
 import { state } from "../../state";
 
 export function initPlayGameResult(params) {
-  console.log("entre a playResults");
-
   const cs = state.getState();
   const div = document.createElement("div");
-  //si es el playr1
+  //si es el player1
   if (cs.userNombre) {
-    console.log("soy player 1 en results");
-
     const game = {
       movePlayer1: cs.currentGame.player1move,
       movePlayer2: cs.currentGame.player2move,
@@ -39,7 +35,6 @@ export function initPlayGameResult(params) {
       }
     }, 3000);
   } else {
-    console.log("soy player 2 en results");
     const game = {
       movePlayer1: cs.currentGame.player1move,
       movePlayer2: cs.currentGame.player2move,

@@ -2,7 +2,7 @@ import { state } from "../../state";
 
 export function initPlayGame(params) {
   const cs = state.getState();
-  const countDown: number = 3; //aqui aumente a 4
+  const countDown: number = 3;
   const div = document.createElement("div");
   div.classList.add("game__game-container");
   div.innerHTML = `
@@ -34,15 +34,9 @@ export function initPlayGame(params) {
     });
   }
 
-  // showBothPlays muestra ambas jugadas en la pantalla y analiza si se empató, perdió, o ganó.
-  // guarda las jugadas en el state y el resultado si es ganador o perdedor, si se empata, reinicia el juego.
+  // showBothPlays se encarga de verificar si los dos player juaron para mandarlos a playResults.
 
   function showBothPlays() {
-    // console.log("me llego la juda a showBoth1", playerPlay);
-    // state.listenRoomPlayer2();15/4
-
-    // console.log("mande el movimiento al db ", cs.currentGame.player1move);
-
     const searchMove = setInterval(() => {
       if (
         cs.currentGame.player2move != "" &&
@@ -50,15 +44,11 @@ export function initPlayGame(params) {
       ) {
         clearInterval(searchMove);
         params.goTo("/playResults");
-      } else {
-        console.log("no tiene jugada el player2");
       }
-    }, 1500); //baje el tiempo
+    }, 1500);
   }
 
   function showBothPlays2() {
-    // state.listenRoomPlayer1(); 15/4
-
     const searchMove2 = setInterval(() => {
       if (
         cs.currentGame.player1move != "" &&
@@ -66,13 +56,11 @@ export function initPlayGame(params) {
       ) {
         clearInterval(searchMove2);
         params.goTo("/playResults");
-      } else {
-        console.log("no tiene jugada el player1");
       }
     }, 1500);
   }
 
-  /* aqui iria el style */
+  /*  style */
   const style = document.createElement("style");
   style.innerHTML = `
        .player-play.selected {
@@ -132,13 +120,9 @@ export function initPlayGame(params) {
   }
 
   /* 
-  crea un nuevo cuenta regresiva despendienso si el jugador eligio o no, y realiza diferentes acciones
-  podriamos hacer una funcion igual para dar tiempo a que  comunique mi page a firebase asi ya queda guaradada los move
-  */
+  crea un nuevo cuenta regresiva despendienso si el jugador eligio o no, y realiza diferentes acciones  */
   if (cs.currentGame.player1move == "" && cs.currentGame.player2move == "") {
     setTimeout(() => {
-      console.log("entre al setTimeOut");
-
       let timer = 2;
       let playerPlayEl: any = div.querySelector(".selected") || "none";
 
@@ -149,12 +133,12 @@ export function initPlayGame(params) {
           clearInterval(time);
           timesUp();
         } else if (timer == 0) {
-          // aqui manda a showboth lo que eligio
           //si es player1
           if (cs.userNombre) {
             clearInterval(time);
+            //gurdo jugada en el state
             state.setGame(playerPlayEl.type);
-
+            //seteo en mi base de datos
             state.movePlayer1Rtdb(() => {
               showBothPlays();
             });
@@ -163,14 +147,14 @@ export function initPlayGame(params) {
           if (cs.usernombre) {
             clearInterval(time);
             state.setGame2(playerPlayEl.type);
-
+            //seteo en mi base de datos
             state.movePlayer2Rtdb(() => {
               showBothPlays2();
             });
           }
         }
       }, 1000);
-    }, 4000); // puse 4 segundo 12/04
+    }, 4000);
   }
 
   return div;
