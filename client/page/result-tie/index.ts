@@ -11,17 +11,23 @@ export function initResultEmpate(params) {
         </div>
         <text-el variant="">Tira de vuelta</text-el>
       <div class="instructions__button-container">
-       <boton-el class= "instructions__button-start" >! Volver a jugar ¡</boton-el>
+       <boton-el class= "instru-sctions__buttontart" >! Volver a jugar ¡</boton-el>
+       <text-el class= "espera">esperando a ${cs.player2Nombre}<text-el>
       </div>
       
   `;
     div.classList.add("instructions__main-div-container");
-    div.classList.add("instructions__main-div-container");
 
-    const button = div.querySelector(".instructions__button-start");
+    const starOponente = div.querySelector(".espera");
+    starOponente.setAttribute("style", "display:none");
+
+    const button = div.querySelector(".instru-sctions__buttontart");
 
     button.addEventListener("click", () => {
-      state.tiePlayer1Rtdb();
+      state.tiePlayer1Rtdb(() => {
+        button.setAttribute("style", "display:none");
+        starOponente.setAttribute("style", "display:inherit");
+      });
     });
   } else {
     div.innerHTML = `
@@ -32,16 +38,22 @@ export function initResultEmpate(params) {
         <text-el variant="">Tira de vuelta</text-el>
       <div class="instructions__button-container">
        <boton-el class= "instructions__button-start" >! Volver a jugar ¡</boton-el>
+       <text-el class= "espera">esperando a ${cs.usernombre}<text-el>
       </div>
       
   `;
     div.classList.add("instructions__main-div-container");
-    div.classList.add("instructions__main-div-container");
+
+    const starOponente = div.querySelector(".espera");
+    starOponente.setAttribute("style", "display:none");
 
     const button = div.querySelector(".instructions__button-start");
 
     button.addEventListener("click", () => {
-      state.tiePlayer2Rtdb();
+      state.tiePlayer2Rtdb(() => {
+        button.setAttribute("style", "display:none");
+        starOponente.setAttribute("style", "display:inherit");
+      });
     });
   }
   const search = setInterval(() => {

@@ -18,6 +18,7 @@ export function initWriteId(params) {
     
 
       <button class= "button" >Comenzar</button>
+      <text-el class= "espera">esperando al aponente<text-el>
       
       </form>
       
@@ -30,6 +31,10 @@ export function initWriteId(params) {
   div.classList.add("welcome__main-div-container");
 
   const formEl = div.querySelector(".write__input");
+  const button = div.querySelector(".button");
+  const starOponente = div.querySelector(".espera");
+
+  starOponente.setAttribute("style", "display:none");
 
   formEl.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -41,7 +46,10 @@ export function initWriteId(params) {
       if (err) console.log("este es el error del signup de writeId", err);
       state.accessToRoomPlayer2(idValue as HTMLInputElement, () => {
         state.setNamePlayer2Rtdb(() => {
-          state.readyPlayer2Rtdb(() => {});
+          state.readyPlayer2Rtdb(() => {
+            button.setAttribute("style", "display:none");
+            starOponente.setAttribute("style", "display:inherit");
+          });
         });
       });
     });
@@ -49,9 +57,7 @@ export function initWriteId(params) {
   state.subscribe(() => {
     const cs = state.getState();
     if (cs.readyPlayer1 == true) {
-      if (cs.usernombre) {
-        params.goTo("/play");
-      }
+      params.goTo("/play");
     }
   });
   const stylepush = document.createElement("style");
