@@ -4,7 +4,7 @@ import { map } from "lodash";
 type Play = "piedra" | "papel" | "tijera";
 type Game = {
   player1move: Play;
-  player2move: Play; //en game cambie los nombres
+  player2move: Play;
 };
 const API_URL = "http://localhost:3000";
 const state = {
@@ -26,6 +26,8 @@ const state = {
     rtdbRoomId: "",
     playRestar1: false,
     playRestar2: false,
+    tiePlayer1: false,
+    tiePlayer2: false,
   },
   listeners: [],
 
@@ -82,20 +84,16 @@ const state = {
       if (gane) {
         //aqui pusheo en el state gano el player1
         this.data.history.push(0);
-        //this.setState(cs);
 
-        //state.winerPlayer1Rtdb();
         return (result = "ganaste");
       }
 
       if (perdi) {
         //aqui pusheo en el state gano el player2
         this.data.history.push(1);
-        //this.setState(cs);
 
         return (result = "perdiste");
       } else {
-        // console.log("empate desde el player1");
         return (result = "empate");
       }
     } else {
@@ -117,29 +115,21 @@ const state = {
       if (gane) {
         //aqui pusheo en el state gano el player1
         this.data.history.push(1);
-        /* aqui solucione la no carga de la page de player2 sacando el setState */
-        //this.setState(cs); estoy setendo d vuelta
-        //state.winerPlayer1Rtdb();
         return (result = "ganaste");
       }
 
       if (perdi) {
         //aqui pusheo en el state gano el player2
         this.data.history.push(0);
-        //this.setState(cs); estoy seteando de vuelta
         return (result = "perdiste");
       } else {
-        // console.log("empate desde el player 2");
         return (result = "empate");
       }
     }
-    //this.setState(cs); estoy seteando de vuelta
   },
 
   //  // Recorre el historial de jugadas y devuelve cuantas veces ganó la pc y el jugador
   returnScore() {
-    // console.log("entre al score");
-
     const lastState = this.getState();
     const score = {
       player1: 0,
@@ -153,8 +143,6 @@ const state = {
       }
     }
 
-    //this.setState(lastState); //guardamos el score en el state   aquicomente probando por q no me manda a la pagina q es
-
     return score;
   },
   //
@@ -163,12 +151,10 @@ const state = {
   setNameUser1(userNombre: string) {
     const cs = this.getState();
     cs.userNombre = userNombre;
-    // this.setState(cs);
   },
   setNameUser2(player2Nombre: string) {
     const cs = this.getState();
     cs.player2Nombre = player2Nombre;
-    // this.setState(cs);
   },
 
   //creamos un usuario en la basede datos y nos da el userId hay que hcer otro para el usuario 2
@@ -303,8 +289,9 @@ const state = {
       cs.playRestar1 = player[1];
       cs.player1Online = player[2];
       cs.readyPlayer1 = player[3];
-      cs.userId = player[4];
-      cs.usernombre = player[5];
+      cs.tiePlayer1 = player[4];
+      cs.userId = player[5];
+      cs.usernombre = player[6];
       this.setState(cs);
     });
   },
@@ -321,6 +308,7 @@ const state = {
       cs.player2Nombre = player[3];
       cs.player2Online = player[4];
       cs.readyPlayer2 = player[5];
+      cs.tiePlayer2 = player[6];
       this.setState(cs);
     });
   },
@@ -338,6 +326,7 @@ const state = {
         userId: cs.userId,
         usernombre: cs.userNombre,
         movePlayer1: "",
+        tiePlayer1: false,
       }),
     });
 
@@ -361,6 +350,7 @@ const state = {
         player2Nombre: cs.player2Nombre,
         readyPlayer2: false,
         movePlayer2: "",
+        tiePlayer2: false,
       }),
     });
 
@@ -383,6 +373,7 @@ const state = {
         userId: cs.userId,
         usernombre: cs.userNombre,
         movePlayer1: "",
+        tiePlayer1: false,
       }),
     });
 
@@ -404,6 +395,7 @@ const state = {
         player2Nombre: cs.player2Nombre,
         readyPlayer2: true,
         movePlayer2: "",
+        tiePlayer2: false,
       }),
     });
 
@@ -426,8 +418,11 @@ const state = {
         userId: cs.userId,
         usernombre: cs.userNombre,
         movePlayer1: cs.currentGame.player1move,
+        tiePlayer1: false,
       }),
     });
+    cs.playRestar1 = false;
+    cs.tiePlayer1 = false;
 
     if (callback) {
       callback();
@@ -448,8 +443,11 @@ const state = {
         player2Nombre: cs.player2Nombre,
         readyPlayer2: false,
         movePlayer2: cs.currentGame.player2move,
+        tiePlayer2: false,
       }),
     });
+    cs.playRestar2 = false;
+    cs.tiePlayer2 = false;
 
     if (callback) {
       callback();
@@ -470,6 +468,7 @@ const state = {
         userId: cs.userId,
         usernombre: cs.userNombre,
         movePlayer1: "",
+        tiePlayer1: false,
       }),
     });
     cs.playRestar1 = true;
@@ -495,8 +494,62 @@ const state = {
         player2Nombre: cs.player2Nombre,
         readyPlayer2: false,
         movePlayer2: "",
+        tiePlayer2: false,
       }),
     });
+    cs.playRestar2 = true;
+    cs.currentGame.player2move = "";
+
+    if (callback) {
+      callback();
+    }
+  },
+  tiePlayer1Rtdb(callback?) {
+    const cs = this.getState();
+
+    fetch(API_URL + "/rooms/" + cs.rtdbRoomId + "/player1", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        playRestar1: true,
+        player1Online: true,
+        readyPlayer1: false,
+        userId: cs.userId,
+        usernombre: cs.userNombre,
+        movePlayer1: "",
+        tiePlayer1: true,
+      }),
+    });
+    cs.tiePlayer1 = true;
+    cs.playRestar1 = true;
+    cs.currentGame.player1move = "";
+
+    if (callback) {
+      callback();
+    }
+  },
+
+  tiePlayer2Rtdb(callback?) {
+    const cs = this.getState();
+
+    fetch(API_URL + "/rooms/" + cs.rtdbRoomId + "/player2", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        playRestar2: true,
+        player2Online: true,
+        player2Id: cs.player2Id,
+        player2Nombre: cs.player2Nombre,
+        readyPlayer2: false,
+        movePlayer2: "",
+        tiePlayer2: true,
+      }),
+    });
+    cs.tiePlayer2 = true;
     cs.playRestar2 = true;
     cs.currentGame.player2move = "";
 

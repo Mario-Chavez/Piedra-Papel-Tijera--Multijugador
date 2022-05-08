@@ -21,7 +21,7 @@ export function initResultEmpate(params) {
     const button = div.querySelector(".instructions__button-start");
 
     button.addEventListener("click", () => {
-      state.restarPlayer1Rtdb();
+      state.tiePlayer1Rtdb();
     });
   } else {
     div.innerHTML = `
@@ -41,11 +41,11 @@ export function initResultEmpate(params) {
     const button = div.querySelector(".instructions__button-start");
 
     button.addEventListener("click", () => {
-      state.restarPlayer2Rtdb();
+      state.tiePlayer2Rtdb();
     });
   }
   const search = setInterval(() => {
-    if (cs.playRestar1 == true && cs.playRestar2 == true) {
+    if (cs.tiePlayer1 == true && cs.tiePlayer2 == true) {
       clearInterval(search);
       params.goTo("/play");
     }

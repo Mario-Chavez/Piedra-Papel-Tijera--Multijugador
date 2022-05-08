@@ -100,6 +100,7 @@ app.post("/rooms", (req, res) => {
               playRestar1: false,
               player1Online: false,
               movePlayer1: "",
+              tiePlayer1: false,
             },
             player2: {
               player2Id: "",
@@ -108,6 +109,7 @@ app.post("/rooms", (req, res) => {
               player2Online: false,
               playRestar2: false,
               movePlayer2: "",
+              tiePlayer2: false,
             },
             owner: userId,
           })
@@ -178,13 +180,12 @@ app.post("/rooms/:rtdbRoomId/player1", function (req, res) {
   const { rtdbRoomId } = req.params;
   const {
     readyPlayer1,
-    // roomId,
-    // winer,
     playRestar1,
     player1Online,
     userId,
     usernombre,
     movePlayer1,
+    tiePlayer1,
   } = req.body;
   const roomRef = rtdb.ref("/rooms/" + rtdbRoomId + "/player1");
   roomRef.update(
@@ -195,6 +196,7 @@ app.post("/rooms/:rtdbRoomId/player1", function (req, res) {
       userId,
       usernombre,
       movePlayer1,
+      tiePlayer1,
     },
     () => {
       res.status(200).json("player1 propiedades actualizadas");
@@ -202,7 +204,7 @@ app.post("/rooms/:rtdbRoomId/player1", function (req, res) {
   );
 });
 
-// este endpoint modifica los valores guardado en el db para el player1
+// este endpoint modifica los valores guardado en el db para el player2
 
 app.post("/rooms/:rtdbRoomId/player2", function (req, res) {
   const { rtdbRoomId } = req.params;
@@ -213,6 +215,7 @@ app.post("/rooms/:rtdbRoomId/player2", function (req, res) {
     player2Online,
     playRestar2,
     movePlayer2,
+    tiePlayer2,
   } = req.body;
   const roomRef = rtdb.ref("/rooms/" + rtdbRoomId + "/player2");
   roomRef.update(
@@ -223,6 +226,7 @@ app.post("/rooms/:rtdbRoomId/player2", function (req, res) {
       player2Online,
       playRestar2,
       movePlayer2,
+      tiePlayer2,
     },
     () => {
       res.status(200).json("player2 propiedades actualizadas");
