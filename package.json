@@ -6,7 +6,11 @@
         "dev:front": "parcel serve ./client/index.html",
         "build:front": "parcel build ./client/index.html",
         "dev:server": "nodemon --watch './server/index.ts' --exec ts-node ./server/dev.ts",
-        "build:server": "tsc ./server/index.ts"
+        "build:server": "tsc ./server/index.ts",
+        "test": "ava",
+        "build": "yarn build:front && yarn build:server",
+        "start": "node ./server.index.js"
+
     },
     "dependencies": {
         "@types/node": "^17.0.0",
