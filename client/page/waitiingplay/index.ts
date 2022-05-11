@@ -1,13 +1,13 @@
 import { state } from "../../state";
 
-export function initWaitingOpp(params) {
+export function initWaitingPlay(params) {
   const cs = state.getState();
   const div = document.createElement("div");
   //player1
   if (cs.userNombre) {
     div.innerHTML = `
     <div class="welcome-page__titulo-conteiner">
-            <text-el variant="title"><h2>Esperando a</h2></text-el>
+            <text-el variant="title"><h2>Esperando la jugada de</h2></text-el>
             <text-el variant="title"><h2>${cs.player2Nombre}</h2></text-el>
             </div>
             <div class="welcome-page__plays-container">
@@ -17,21 +17,16 @@ export function initWaitingOpp(params) {
             </div>
             `;
     const intId = setInterval(() => {
-      if (cs.playRestar2 == true && cs.playRestar1 == true) {
-        if (
-          cs.currentGame.player1move == "" &&
-          cs.currentGame.player2move == ""
-        ) {
-          clearInterval(intId);
-          params.goTo("/play");
-        }
+      if (cs.currentGame.player2move != "") {
+        clearInterval(intId);
+        params.goTo("/playResults");
       }
     }, 1000);
   } else {
     //player2
     div.innerHTML = `
             <div class="welcome-page__titulo-conteiner">
-            <text-el variant="title"><h2>Esperando a</h2></text-el>
+            <text-el variant="title"><h2>Esperando la jugada de</h2></text-el>
             <text-el variant="title"><h2>${cs.usernombre}</h2></text-el>
         </div>
     <div class="welcome-page__plays-container">
@@ -41,15 +36,10 @@ export function initWaitingOpp(params) {
     </div>
             `;
     const intId = setInterval(() => {
-      if (cs.playRestar2 == true && cs.playRestar1 == true) {
-        if (
-          cs.currentGame.player1move == "" &&
-          cs.currentGame.player2move == ""
-        ) {
-          clearInterval(intId);
+      if (cs.currentGame.player1move != "") {
+        clearInterval(intId);
 
-          params.goTo("/play");
-        }
+        params.goTo("/playResults");
       }
     }, 1000);
   }

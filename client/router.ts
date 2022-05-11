@@ -8,6 +8,7 @@ import { initResultWin } from "./page/result-win";
 import { initResultEmpate } from "./page/result-tie";
 import { initPlayGameResult } from "./page/plays-results";
 import { initWaitingOpp } from "./page/waitiingOp";
+import { initWaitingPlay } from "./page/waitiingplay";
 const routes = [
   {
     path: /\/welcome/,
@@ -33,6 +34,10 @@ const routes = [
   {
     path: /\/waiting/,
     handler: initWaitingOpp,
+  },
+  {
+    path: /\/waitingPlay/,
+    handler: initWaitingPlay,
   },
   {
     path: /\/playResults/,

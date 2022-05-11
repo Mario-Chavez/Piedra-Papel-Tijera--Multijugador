@@ -16,46 +16,71 @@ export function initPlayGame(params) {
 
   // timesUp modifica la div principal cuando termina el contador
   function timesUp() {
-    div.innerHTML = `
-               <text-el variant="title"><h1>Pasó el tiempo </h1></text-el>
-               </div>
-                <div class="instructions__titulo-conteiner">
-                    <text-el variant="">Elige antes de los 3 segundos.</text-el>
-                </div>
-                <div class="instructions__button-container">
-                <boton-el class= "instructions__button-start" >! Volver a jugar ¡</boton-el>
-               </div>
-               
-        `;
-    const goToGameButton = div.querySelector(".instructions__button-container");
+    //player1
+    if (cs.userNombre) {
+      div.innerHTML = `
+      <text-el variant="title"><h1>Pasó el tiempo </h1></text-el>
+      </div>
+      <div class="instructions__titulo-conteiner">
+      <text-el variant="">Elige antes de los 3 segundos.</text-el>
+      </div>
+      <div class="instructions__button-container">
+      <boton-el class= "instructions__button-start" >! Volver a jugar ¡</boton-el>
+      </div>
+      
+      `;
+      const goToGameButton = div.querySelector(
+        ".instructions__button-container"
+      );
 
-    goToGameButton.addEventListener("click", () => {
-      params.goTo("/play");
-    });
+      goToGameButton.addEventListener("click", () => {
+        params.goTo("/play");
+      });
+    } //player2
+    else {
+      div.innerHTML = `
+        <text-el variant="title"><h1>Pasó el tiempo </h1></text-el>
+                   </div>
+                    <div class="instructions__titulo-conteiner">
+                        <text-el variant="">Elige antes de los 3 segundos.</text-el>
+                    </div>
+                    <div class="instructions__button-container">
+                    <boton-el class= "instructions__button-start" >! Volver a jugar ¡</boton-el>
+                   </div>
+                   
+            `;
+      const goToGameButton = div.querySelector(
+        ".instructions__button-container"
+      );
+
+      goToGameButton.addEventListener("click", () => {
+        params.goTo("/play");
+      });
+    }
   }
 
   // showBothPlays se encarga de verificar si los dos player juaron para mandarlos a playResults.
 
   function showBothPlays() {
     const searchMove = setInterval(() => {
-      if (
-        cs.currentGame.player2move != "" &&
-        cs.currentGame.player1move != ""
-      ) {
+      if (cs.currentGame.player2move != "") {
         clearInterval(searchMove);
         params.goTo("/playResults");
+      } else {
+        clearInterval(searchMove);
+        params.goTo("/waitingPlay");
       }
     }, 1500);
   }
 
   function showBothPlays2() {
     const searchMove2 = setInterval(() => {
-      if (
-        cs.currentGame.player1move != "" &&
-        cs.currentGame.player2move != ""
-      ) {
+      if (cs.currentGame.player1move != "") {
         clearInterval(searchMove2);
         params.goTo("/playResults");
+      } else {
+        clearInterval(searchMove2);
+        params.goTo("/waitingPlay");
       }
     }, 1500);
   }
@@ -100,7 +125,7 @@ export function initPlayGame(params) {
     ".game__player-plays-container"
   ).children;
 
-  // Agrego los event listeners a cada una de las jugadas de el/la jugador/a,
+  // Agrego los event listeners a cada una de las jugadas de el jugador
   // y agrega la clase "selected"
   for (let p of playerPlaysArray) {
     p.classList.add("player-play");
@@ -121,41 +146,39 @@ export function initPlayGame(params) {
 
   /* 
   crea un nuevo cuenta regresiva despendienso si el jugador eligio o no, y realiza diferentes acciones  */
-  if (cs.currentGame.player1move == "" && cs.currentGame.player2move == "") {
-    setTimeout(() => {
-      let timer = 2;
-      let playerPlayEl: any = div.querySelector(".selected") || "none";
+  setTimeout(() => {
+    let timer = 2;
+    let playerPlayEl: any = div.querySelector(".selected") || "none";
 
-      const time = setInterval(() => {
-        timer--;
-        if (timer == 0 && playerPlayEl == "none") {
-          //si es none lo manda de vuelta a elegir o a l inicio de la pagina para que elija
+    const time = setInterval(() => {
+      timer--;
+      if (timer == 0 && playerPlayEl == "none") {
+        //si no elige manda a elegir de vuelta
+        clearInterval(time);
+        timesUp();
+      } else if (timer == 0) {
+        //si es player1
+        if (cs.userNombre) {
           clearInterval(time);
-          timesUp();
-        } else if (timer == 0) {
-          //si es player1
-          if (cs.userNombre) {
-            clearInterval(time);
-            //gurdo jugada en el state
-            state.setGame(playerPlayEl.type);
-            //seteo en mi base de datos
-            state.movePlayer1Rtdb(() => {
-              showBothPlays();
-            });
-          }
-          // si es player2
-          if (cs.usernombre) {
-            clearInterval(time);
-            state.setGame2(playerPlayEl.type);
-            //seteo en mi base de datos
-            state.movePlayer2Rtdb(() => {
-              showBothPlays2();
-            });
-          }
+          //gurdo jugada en el state
+          state.setGame(playerPlayEl.type);
+          //seteo en mi base de datos
+          state.movePlayer1Rtdb(() => {
+            showBothPlays();
+          });
         }
-      }, 1000);
-    }, 4000);
-  }
+        // si es player2
+        if (cs.usernombre) {
+          clearInterval(time);
+          state.setGame2(playerPlayEl.type);
+          //seteo en mi base de datos
+          state.movePlayer2Rtdb(() => {
+            showBothPlays2();
+          });
+        }
+      }
+    }, 1000);
+  }, 4000);
 
   return div;
 }

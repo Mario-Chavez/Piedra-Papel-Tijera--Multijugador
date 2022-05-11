@@ -6,16 +6,15 @@ var nanoid_1 = require("nanoid");
 var cors = require("cors");
 var path = require("path");
 var express = require("express");
-/////////////
 var app = express();
-var port = process.env.PORT || 3000;
-/* back */
-app.use(express.json());
 app.use(cors());
+var port = process.env.PORT || 3000;
+app.use(express.json());
 app.use(express.static("dist"));
 var userCollections = db_1.firestore.collection("users");
 var roomCollections = db_1.firestore.collection("rooms");
 //handler back
+//prueba
 app.get("/env", function (req, res) {
     res.json({
         environment: process.env.NODE_ENV
@@ -197,7 +196,6 @@ app.post("/rooms/:rtdbRoomId/player2", function (req, res) {
         res.status(200).json("player2 propiedades actualizadas");
     });
 });
-app.use(express.static("dist"));
 app.get("*", function (req, res) {
     res.sendFile(path.resolve(path.join(__dirname, "../dist/index.html")));
 });

@@ -423,6 +423,7 @@ const state = {
     });
     cs.playRestar1 = false;
     cs.tiePlayer1 = false;
+    state.setState(cs);
 
     if (callback) {
       callback();
@@ -448,7 +449,7 @@ const state = {
     });
     cs.playRestar2 = false;
     cs.tiePlayer2 = false;
-
+    state.setState(cs);
     if (callback) {
       callback();
     }
@@ -473,6 +474,7 @@ const state = {
     });
     cs.playRestar1 = true;
     cs.currentGame.player1move = "";
+    state.setState(cs);
 
     if (callback) {
       callback();
@@ -499,6 +501,7 @@ const state = {
     });
     cs.playRestar2 = true;
     cs.currentGame.player2move = "";
+    state.setState(cs);
 
     if (callback) {
       callback();
@@ -558,7 +561,6 @@ const state = {
     }
   },
 
-  /* nuevo cambio en el state m,ade uin heroku desaf */
   subscribe(callback: (any) => any) {
     this.listeners.push(callback);
   },

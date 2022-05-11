@@ -4,20 +4,18 @@ import { nanoid } from "nanoid";
 import * as cors from "cors";
 import * as path from "path";
 import * as express from "express";
-/////////////
-const app = express();
-const port = process.env.PORT || 3000;
 
-/* back */
-app.use(express.json());
+const app = express();
 app.use(cors());
+const port = process.env.PORT || 3000;
+app.use(express.json());
 app.use(express.static("dist"));
 
 const userCollections = firestore.collection("users");
 const roomCollections = firestore.collection("rooms");
 
 //handler back
-
+//prueba
 app.get("/env", (req, res) => {
   res.json({
     environment: process.env.NODE_ENV,
@@ -233,8 +231,6 @@ app.post("/rooms/:rtdbRoomId/player2", function (req, res) {
     }
   );
 });
-
-app.use(express.static("dist"));
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(path.join(__dirname, "../dist/index.html")));
