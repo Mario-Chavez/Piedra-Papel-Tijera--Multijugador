@@ -20,8 +20,6 @@ export function initResultWin(params) {
     const button = div.querySelector(".instructions__button-container");
 
     button.addEventListener("click", () => {
-      console.log("hice click al boton de restar player1");
-
       state.restarPlayer1Rtdb(() => {
         params.goTo("/waiting");
       });

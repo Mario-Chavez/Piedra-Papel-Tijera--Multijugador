@@ -41,7 +41,7 @@ const state = {
       cb();
     }
     sessionStorage.setItem("state", JSON.stringify(newState));
-    console.log("soy el state del front", this.data);
+    // console.log("soy el state del front", this.data);
   },
   //Guarda ambas jugadas en el state
 
