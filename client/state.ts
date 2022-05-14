@@ -6,7 +6,7 @@ type Game = {
   player1move: Play;
   player2move: Play;
 };
-const API_URL = process.env.PORT;
+const API_URL = "https://juego-piedra-papel-tijeras.herokuapp.com";
 const state = {
   data: {
     currentGame: {
