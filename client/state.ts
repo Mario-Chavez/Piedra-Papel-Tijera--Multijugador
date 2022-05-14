@@ -43,6 +43,17 @@ const state = {
     sessionStorage.setItem("state", JSON.stringify(newState));
     // console.log("soy el state del front", this.data);
   },
+  initStorage() {
+    const cs = this.getState();
+    let localdata = sessionStorage.getItem("data");
+    if (localdata == null || "null") {
+      sessionStorage.setItem("data", JSON.stringify(cs));
+    }
+    if (localdata != null) {
+      let parsedData = JSON.parse(localdata);
+      this.setState(parsedData);
+    }
+  },
   //Guarda ambas jugadas en el state
 
   setGame(playerPlay: Play) {

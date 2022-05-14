@@ -7,6 +7,7 @@ import { state } from "./state";
 
 (function () {
   const cs = state.getState();
+  state.initStorage();
   initTextComp();
   initBotonComp();
   initMyPlay();
