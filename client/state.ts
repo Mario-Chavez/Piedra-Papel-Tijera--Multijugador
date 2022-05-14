@@ -6,7 +6,7 @@ type Game = {
   player1move: Play;
   player2move: Play;
 };
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:3000" || process.env.PORT;
 const state = {
   data: {
     currentGame: {
